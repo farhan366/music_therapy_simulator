@@ -6,13 +6,37 @@ from templates import get_intervention_card, get_safe_card, get_homeostasis_card
 # 1. Page Configuration
 st.set_page_config(page_title="BioStream Music", layout="wide", initial_sidebar_state="expanded")
 
-# Inject external style.css file into the Streamlit application context
-try:
-    with open("style.css") as f:
-        # Using a regular string instead of an f-string to prevent brackets conflict
-        st.markdown("<style>" + f.read() + "</style>", unsafe_allowed_html=True)
-except FileNotFoundError:
-    pass
+# Inject CSS styles directly using a standard multi-line string to eliminate file reading crashes
+st.markdown("""
+<style>
+    .reportview-container {
+        background-color: #0b0f19;
+    }
+    .stMetric {
+        background-color: #161b26;
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid #242b3d;
+    }
+    .spotify-card {
+        background-color: #181818;
+        padding: 20px;
+        border-radius: 12px;
+        border: 1px solid #282828;
+        margin-bottom: 15px;
+        color: #ffffff;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+    .track-active {
+        border-left: 5px solid #ff4b4b;
+        padding-left: 15px;
+    }
+    .track-safe {
+        border-left: 5px solid #00cdff;
+        padding-left: 15px;
+    }
+</style>
+""", unsafe_allowed_html=True)
 
 # 2. Session State Initialization
 if 'current_index' not in st.session_state:
@@ -110,7 +134,6 @@ with col_ai:
         st.caption("Model Evaluation Stability: Confidence Level @ 91.4% (CNN-LSTM Subnetwork)")
         st.markdown("### 🔔 Human-in-the-Loop Feedback Dispatcher")
         
-        # Call modularized layout cards from templates.py
         if track_meta['risk']:
             st.markdown(get_intervention_card(selected_track, track_meta['bpm']), unsafe_allowed_html=True)
         else:
