@@ -6,7 +6,7 @@ from templates import get_intervention_card, get_safe_card, get_homeostasis_card
 # 1. Page Configuration
 st.set_page_config(page_title="BioStream Music", layout="wide", initial_sidebar_state="expanded")
 
-# Inject CSS styles directly using a standard multi-line string to eliminate file reading crashes
+# Inject CSS styles directly with the corrected 'unsafe_allow_html' parameter
 st.markdown("""
 <style>
     .reportview-container {
@@ -36,7 +36,7 @@ st.markdown("""
         padding-left: 15px;
     }
 </style>
-""", unsafe_allowed_html=True)
+""", unsafe_allow_html=True)
 
 # 2. Session State Initialization
 if 'current_index' not in st.session_state:
@@ -135,14 +135,14 @@ with col_ai:
         st.markdown("### 🔔 Human-in-the-Loop Feedback Dispatcher")
         
         if track_meta['risk']:
-            st.markdown(get_intervention_card(selected_track, track_meta['bpm']), unsafe_allowed_html=True)
+            st.markdown(get_intervention_card(selected_track, track_meta['bpm']), unsafe_allow_html=True)
         else:
-            st.markdown(get_safe_card(), unsafe_allowed_html=True)
+            st.markdown(get_safe_card(), unsafe_allow_html=True)
     else:
         st.success("🟢 Inference Result: HOMEOSTASIS BASELINE STATE")
         st.caption("Model Evaluation Stability: Confidence Level @ 94.2% (Steady State)")
         st.markdown("### 🔔 Human-in-the-Loop Feedback Dispatcher")
-        st.markdown(get_homeostasis_card(), unsafe_allowed_html=True)
+        st.markdown(get_homeostasis_card(), unsafe_allow_html=True)
 
 # Loop Re-trigger Control Directive
 if st.session_state.is_streaming and st.session_state.current_index < len(df):
