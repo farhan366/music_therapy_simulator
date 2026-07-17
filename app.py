@@ -9,7 +9,8 @@ st.set_page_config(page_title="BioStream Music", layout="wide", initial_sidebar_
 # Inject external style.css file into the Streamlit application context
 try:
     with open("style.css") as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allowed_html=True)
+        # Using a regular string instead of an f-string to prevent brackets conflict
+        st.markdown("<style>" + f.read() + "</style>", unsafe_allowed_html=True)
 except FileNotFoundError:
     pass
 
